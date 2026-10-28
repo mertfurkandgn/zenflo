@@ -1,34 +1,15 @@
-
-
-import { Button } from "@/components/ui/button";
-import { Client } from "./client";
+import { requireAuth } from "@/lib/auth-utils";
 import { caller } from "@/trpc/server";
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getQueryClient, trpc } from '../trpc/server';
+import Logout from "./logout";
 
 export default async function Home() {
-  const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.getUser.queryOptions());
-
+  await requireAuth();
+  const data = await caller.getUser();
 
   return (
-  <>
-  <HydrationBoundary state={dehydrate(queryClient)}>
-
-    <Client />
-  </HydrationBoundary>
-  <Button>
-    hello again 
-  </Button>
-  
-
-import prisma from "@/lib/db";
-
-export default async function Home() {
-  const data = await prisma.user.findMany();
-  return (
-  <><div className="text-red-500"> {JSON.stringify(data)} </div>
-
-  </>
+    <>
+      <h1>{JSON.stringify(data)}</h1>
+      <Logout />
+    </>
   );
 }
