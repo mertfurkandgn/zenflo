@@ -10,6 +10,7 @@ export default function Home() {
 
   
   const { data } = useQuery(trpc.getWorkflows.queryOptions());
+
   const create = useMutation(
     trpc.createWorkflows.mutationOptions({
       onSuccess: () => {
@@ -17,6 +18,12 @@ export default function Home() {
       },
     }),
   );
+
+  const gemini = useMutation(trpc.testAI.mutationOptions({
+    onSuccess: () => {
+      toast.success("Job queued");
+      },
+  }))
 
   return (
     <>
@@ -29,6 +36,8 @@ export default function Home() {
       >
         Create
       </Button>
+
+      <Button disabled={gemini.isPending} onClick={()=>{gemini.mutate()}}>GEMINI</Button>
       <Logout />
     </>
   );
