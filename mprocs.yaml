@@ -1,0 +1,5 @@
+procs:
+  next:
+    cmd: ["cmd", "/c", "npm run dev"]
+  inngest:
+    cmd: ["cmd", "/c", "npx inngest-cli@latest dev -u http://localhost:3000/api/inngest"]
